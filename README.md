@@ -7,8 +7,11 @@ This PR introduces core functionality for wrapping and unwrapping ETH/WETH withi
 ## What's Done:
 
 **Shows Balances**: Shows both ETH and WETH balances for the connected Safe account.
+
 **Wrapping Functionality**: Lets users convert ETH within their Safe to WETH.
+
 **Unwrapping Functionality**: Lets users convert WETH back to ETH within their Safe.
+
 **Input Validation**: Prevents users from wrapping/unwrapping amounts exceeding their Safe balance.
 
 ## How It's Done:
