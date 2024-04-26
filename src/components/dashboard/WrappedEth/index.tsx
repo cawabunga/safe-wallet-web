@@ -1,13 +1,13 @@
-import { Controller, useForm } from 'react-hook-form'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { Card, WidgetBody, WidgetContainer } from '../styled'
-import { formatVisualAmount, safeParseUnits } from '@/utils/formatters'
+import { formatVisualAmount } from '@/utils/formatters'
 import WalletBalance from '@/components/common/WalletBalance'
 import useSafeTransactionFlow from './useSafeTransactionFlow'
 import { useTokenBalance } from './useTokenBalance'
 import { useWethAddress } from './useWethAddress'
 import { WETH_METADATA, wethTokenInterface } from './weth'
 import useSafeBalance from './useSafeBalance'
+import { WrapEthForm } from './WrapEthForm'
 
 const WrappedEth = () => {
   const onTxSubmit = useSafeTransactionFlow()
@@ -18,12 +18,6 @@ const WrappedEth = () => {
   const [ethBalance, ethErr, ethLoading] = useSafeBalance()
 
   const wethBalanceFormatted = formatVisualAmount(wethBalance || 0, WETH_METADATA.decimals)
-
-  const { handleSubmit, control } = useForm<{ amount: string }>({
-    defaultValues: {
-      amount: '',
-    },
-  })
 
   return (
     <WidgetContainer>
@@ -38,42 +32,16 @@ const WrappedEth = () => {
           </Typography>
 
           {/* Wrap ETH */}
-          <form
-            onSubmit={handleSubmit((fields) => {
-              const amount = safeParseUnits(fields.amount, WETH_METADATA.decimals)
-              if (!amount) return
-
+          <WrapEthForm
+            maxAmount={ethBalance}
+            onSubmit={({ amount }) => {
               onTxSubmit({
                 to: wethAddress,
                 value: amount.toString(),
                 data: wethTokenInterface.encodeFunctionData('deposit'),
               })
-            })}
-          >
-            <Box display="flex" mb={3} gap={2}>
-              <Controller
-                render={({ field, fieldState: { error } }) => (
-                  <TextField label="Amount" {...field} error={!!error} helperText={error?.message} />
-                )}
-                name="amount"
-                control={control}
-                rules={{
-                  required: 'Amount is required',
-                  // todo: can be reused from `TokenAmountInput`
-                  validate: (value) => {
-                    const parsed = safeParseUnits(value, WETH_METADATA.decimals)
-                    if (!parsed) return 'Invalid amount'
-                    if (parsed > (ethBalance ?? 0)) return 'Insufficient balance'
-                    return true
-                  },
-                }}
-              />
-
-              <Button type="submit" variant="contained">
-                Wrap
-              </Button>
-            </Box>
-          </form>
+            }}
+          />
 
           <Typography component="h3" variant="subtitle1" fontWeight={700} mb={1}>
             Your WETH balance is {wethBalanceFormatted} {WETH_METADATA.symbol}
