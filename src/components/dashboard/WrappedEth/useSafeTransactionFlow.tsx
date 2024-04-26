@@ -2,7 +2,7 @@ import { useCallback, useContext } from 'react'
 import { TxModalContext } from '@/components/tx-flow'
 import SafeAppsTxFlow from '@/components/tx-flow/flows/SafeAppsTx'
 
-type EthTransaction = {
+export type EthTransaction = {
   to: string
   value: string
   data: string
