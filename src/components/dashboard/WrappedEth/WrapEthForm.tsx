@@ -19,6 +19,7 @@ export function WrapEthForm({ maxAmount, onSubmit, submitText, tokenDecimals }: 
 
   return (
     <form
+      name="wrap-eth-form"
       onSubmit={handleSubmit((fields) => {
         const amount = safeParseUnits(fields.amount, tokenDecimals)
 
