@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material'
 import { useCurrentChain } from '@/hooks/useChains'
-import WalletBalance from '@/components/common/WalletBalance'
+import { formatVisualAmount } from '@/utils/formatters'
 import { WrapEthForm } from './WrapEthForm'
 import { wethTokenInterface } from './weth'
 import useSafeBalance from './useSafeBalance'
@@ -12,9 +12,10 @@ interface WrapEthProps {
 }
 
 export function WrapEth({ onTxSubmit }: WrapEthProps) {
-  const currentChain = useCurrentChain()
   const wethAddress = useWethAddress()
-  const [ethBalance, ethErr, ethLoading] = useSafeBalance()
+  const [balance, balanceErr, balanceLoading] = useSafeBalance()
+
+  const currentChain = useCurrentChain()
   const nativeCurrencyDecimals = currentChain?.nativeCurrency.decimals ?? 18
 
   const handleSubmit = ({ amount }: { amount: bigint }) => {
@@ -28,11 +29,11 @@ export function WrapEth({ onTxSubmit }: WrapEthProps) {
   return (
     <>
       <Typography component="h3" variant="subtitle1" fontWeight={700} mb={1}>
-        Your ETH balance is <WalletBalance balance={ethBalance} />
+        Your ETH balance is {formatVisualAmount(balance ?? 0, nativeCurrencyDecimals)}
       </Typography>
 
       <WrapEthForm
-        maxAmount={ethBalance}
+        maxAmount={balance}
         onSubmit={handleSubmit}
         submitText="Wrap"
         tokenDecimals={nativeCurrencyDecimals}

@@ -12,8 +12,9 @@ interface WrapEthProps {
 
 export function UnwrapEth({ onTxSubmit }: WrapEthProps) {
   const wethAddress = useWethAddress()
-  const [wethBalance, wethErr, wethLoading] = useTokenBalance(wethAddress)
-  const wethBalanceFormatted = formatVisualAmount(wethBalance || 0, WETH_METADATA.decimals)
+  const [balance, balanceErr, balanceLoading] = useTokenBalance(wethAddress)
+
+  const wethDecimals = WETH_METADATA.decimals
 
   const handleSubmit = ({ amount }: { amount: bigint }) => {
     onTxSubmit({
@@ -26,15 +27,10 @@ export function UnwrapEth({ onTxSubmit }: WrapEthProps) {
   return (
     <>
       <Typography component="h3" variant="subtitle1" fontWeight={700} mb={1}>
-        Your WETH balance is {wethBalanceFormatted} {WETH_METADATA.symbol}
+        Your WETH balance is {formatVisualAmount(balance ?? 0, wethDecimals)}
       </Typography>
 
-      <WrapEthForm
-        maxAmount={wethBalance}
-        onSubmit={handleSubmit}
-        submitText="Unwrap"
-        tokenDecimals={WETH_METADATA.decimals}
-      />
+      <WrapEthForm maxAmount={balance} onSubmit={handleSubmit} submitText="Unwrap" tokenDecimals={wethDecimals} />
     </>
   )
 }
