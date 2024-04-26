@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { Card, WidgetBody, WidgetContainer } from '../styled'
 import { formatVisualAmount } from '@/utils/formatters'
 import { useCurrentChain } from '@/hooks/useChains'
@@ -54,11 +54,18 @@ const WrappedEth = () => {
           </Typography>
 
           {/* Unwrap ETH */}
-          <Box display="flex" gap={2}>
-            <TextField label="Amount" />
-
-            <Button variant="contained">Unwrap</Button>
-          </Box>
+          <WrapEthForm
+            maxAmount={wethBalance}
+            onSubmit={({ amount }) => {
+              onTxSubmit({
+                to: wethAddress,
+                value: '0',
+                data: wethTokenInterface.encodeFunctionData('withdraw', [amount.toString()]),
+              })
+            }}
+            submitText="Unwrap"
+            tokenDecimals={WETH_METADATA.decimals}
+          />
         </Card>
       </WidgetBody>
     </WidgetContainer>
