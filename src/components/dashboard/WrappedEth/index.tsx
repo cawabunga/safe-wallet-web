@@ -1,6 +1,7 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { Card, WidgetBody, WidgetContainer } from '../styled'
 import { formatVisualAmount } from '@/utils/formatters'
+import { useCurrentChain } from '@/hooks/useChains'
 import WalletBalance from '@/components/common/WalletBalance'
 import useSafeTransactionFlow from './useSafeTransactionFlow'
 import { useTokenBalance } from './useTokenBalance'
@@ -16,6 +17,9 @@ const WrappedEth = () => {
 
   const [wethBalance, wethErr, wethLoading] = useTokenBalance(wethAddress)
   const [ethBalance, ethErr, ethLoading] = useSafeBalance()
+
+  const currentChain = useCurrentChain()
+  const nativeCurrencyDecimals = currentChain?.nativeCurrency.decimals ?? 18
 
   const wethBalanceFormatted = formatVisualAmount(wethBalance || 0, WETH_METADATA.decimals)
 
@@ -41,6 +45,8 @@ const WrappedEth = () => {
                 data: wethTokenInterface.encodeFunctionData('deposit'),
               })
             }}
+            submitText="Wrap"
+            tokenDecimals={nativeCurrencyDecimals}
           />
 
           <Typography component="h3" variant="subtitle1" fontWeight={700} mb={1}>
