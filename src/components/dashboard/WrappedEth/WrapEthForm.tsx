@@ -29,7 +29,7 @@ export function WrapEthForm({ maxAmount, onSubmit, submitText, tokenDecimals }: 
         onSubmit({ amount })
       })}
     >
-      <Box display="flex" mb={3} gap={2}>
+      <Box display="flex" gap={2}>
         <Controller
           render={({ field, fieldState: { error } }) => (
             <TextField label="Amount" {...field} error={!!error} helperText={error?.message} />

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { Card, WidgetBody, WidgetContainer } from '../styled'
 import useSafeTransactionFlow from './useSafeTransactionFlow'
 import { WrapEth } from './WrapEth'
@@ -15,8 +15,10 @@ const WrappedEth = () => {
 
       <WidgetBody>
         <Card>
-          <WrapEth onTxSubmit={onTxSubmit} />
-          <UnwrapEth onTxSubmit={onTxSubmit} />
+          <Box display="flex" flexDirection="column" gap={3}>
+            <WrapEth onTxSubmit={onTxSubmit} />
+            <UnwrapEth onTxSubmit={onTxSubmit} />
+          </Box>
         </Card>
       </WidgetBody>
     </WidgetContainer>

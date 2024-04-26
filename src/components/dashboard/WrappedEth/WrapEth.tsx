@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useCurrentChain } from '@/hooks/useChains'
 import { formatVisualAmount } from '@/utils/formatters'
 import { WrapEthForm } from './WrapEthForm'
@@ -27,8 +27,8 @@ export function WrapEth({ onTxSubmit }: WrapEthProps) {
   }
 
   return (
-    <>
-      <Typography component="h3" variant="subtitle1" fontWeight={700} mb={1}>
+    <Box display="flex" flexDirection="column" gap={1}>
+      <Typography component="h3" variant="subtitle1" fontWeight={700}>
         Your ETH balance is {formatVisualAmount(balance ?? 0, nativeCurrencyDecimals)}
       </Typography>
 
@@ -38,6 +38,6 @@ export function WrapEth({ onTxSubmit }: WrapEthProps) {
         submitText="Wrap"
         tokenDecimals={nativeCurrencyDecimals}
       />
-    </>
+    </Box>
   )
 }

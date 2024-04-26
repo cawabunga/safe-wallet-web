@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { formatVisualAmount } from '@/utils/formatters'
 import { WETH_METADATA, wethTokenInterface } from './weth'
 import { WrapEthForm } from './WrapEthForm'
@@ -25,12 +25,12 @@ export function UnwrapEth({ onTxSubmit }: WrapEthProps) {
   }
 
   return (
-    <>
-      <Typography component="h3" variant="subtitle1" fontWeight={700} mb={1}>
+    <Box display="flex" flexDirection="column" gap={1}>
+      <Typography component="h3" variant="subtitle1" fontWeight={700}>
         Your WETH balance is {formatVisualAmount(balance ?? 0, wethDecimals)}
       </Typography>
 
       <WrapEthForm maxAmount={balance} onSubmit={handleSubmit} submitText="Unwrap" tokenDecimals={wethDecimals} />
-    </>
+    </Box>
   )
 }
